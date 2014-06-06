@@ -1,10 +1,10 @@
 #glg-employment
-Encapsulates all of the (somewhat bizarre) logic around capturing the data necessary
+Encapsulates all of the (somewhat bizarre and commonly used) logic around capturing the data necessary
 to create an lead / cm employment record.  Handles the validation and implicity relationship
-between fields like `endDate` and `isCurrent`.
+between fields like `endDate` and `isCurrent`.  Also tried to minimize the amount of clicky input needed
+to get a record entered since this is so heavily used.
 
-#### TODO: Allow for prebinding so it's usable for edits as well.  Could also
-probably integrate taxonomizer as the new one is built out
+#### TODO: Allow for prebinding so it's usable for edits as well.  Could also probably integrate taxonomizer as the new one is built out
 
 
 
@@ -42,6 +42,19 @@ indicating the validity of the current state according to our rules:
   valid: true
 }
 </pre>
+
+
+##Methods
+####Clear
+This pretty much does exactly what I hope is obvious given the name.
+
+
+
+
+
+
+
+
 
 
 ##Attributes and Change Handlers
@@ -84,8 +97,6 @@ The value attribute represents the same structure shown above that is emitted on
 ##Event Handlers
 Events are captured off the contained fields and used to trigger validity checks
 and apply the bits of interaction between data elements.
-
-
 
 
 

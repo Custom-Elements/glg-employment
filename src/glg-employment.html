@@ -6,6 +6,12 @@
   <link rel="stylesheet" type="text/css" href="./glg-employment.css">
 
 
+  <div class="title">
+    <ui-input id="title" icon="fa-tag" type="text" value="{{value.title}}" placeholder="Position" on-change="{{titleChange}}" on-focus="{{titleFocus}}" invalid?="{{errors.title}}" />
+
+  </div>
+  
+
   <div class="company-picker">
     <glg-nectar 
         urls="{{nectar}}" 
@@ -41,12 +47,15 @@
     </glg-nectar>
   </div>
 
-  <div class="title">
-    <ui-input id="title" icon="fa-tag" type="text" value="{{value.title}}" placeholder="Position" on-change="{{titleChange}}" on-focus="{{titleFocus}}" invalid?="{{errors.title}}" />
-
-  </div>
   
   <div class="dates">
+
+    <div class="switch-container">
+      <input type="checkbox" class="switch" id="isCurrent" name="isCurrent" checked="{{value.isCurrent}}" on-change="{{flagChange}}">
+      <label for="isCurrent">Current</label>
+    </div>
+
+
     <ui-input 
       type="month" 
       id="startDate"
@@ -56,7 +65,7 @@
       on-change="{{dateChange}}"
       invalid?="{{errors.startDate}}"
     >
-    </ui-input> /
+    </ui-input>
     <ui-input 
       type="month" 
       id="endDate"
@@ -69,11 +78,7 @@
     >
     </ui-input>
 
-    <div class="switch-container">
-      <input type="checkbox" class="switch" id="isCurrent" name="isCurrent" checked="{{value.isCurrent}}" on-change="{{flagChange}}">
-      <label for="isCurrent">Current</label>
-    </div>
-
+    
   </div>
 
 

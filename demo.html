@@ -15,7 +15,7 @@
       }
 
       #holder {
-        width: 640px;
+        width: 65%;
       }
 
       .job {
@@ -35,7 +35,7 @@
   <body unresolved>
     <div id="holder">
       
-      <h4>Employment Form</h4>
+      <h4>Employment Form  <a id="clear"><i class="fa fa-empire"></i></a></h4>
       <br >
       <glg-employment nectar="wss://nectar.glgroup.com/ws"></glg-employment>
 
@@ -70,15 +70,17 @@
         //poke your element here
 
         var employment = document.querySelector('glg-employment')
-            output = document.querySelector('#output');
+            output = document.querySelector('#output')
+            clearLink = document.querySelector('#clear');
+
+
+        clearLink.addEventListener('click', function() {
+          employment.clear()
+        });
+
 
         employment.addEventListener('change', function(evt) {
-          console.log('employment fired a change event', evt.detail)
-
-          output.model = {
-            employment: evt.detail
-          }
-
+          output.model = { employment: evt.detail };
         });
       })
     </script>

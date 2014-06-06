@@ -48,25 +48,40 @@ indicating the validity of the current state according to our rules:
 </pre>
 
 
+##Methods
+####Clear
+This pretty much does exactly what I hope is obvious given the name.
+
+      
+      clear: ->
+        @errors = {}
+        @value = {}
+        @resultset = null
+        @$.company.clear()
+        @$.title.focus()
+        @dateChange()
+
+
 ##Attributes and Change Handlers
 ####value
 The value attribute represents the same structure shown above that is emitted on the `change` event.
 
 
       handleChange: ->
-        # dates
+
         startDate = parseDate(@startDate)
         endDate = parseDate(@endDate)
 
+        @errors = {}
+        
         datesBackward = startDate and endDate and startDate > endDate
         futureEndDate = endDate and endDate > moment()
+
+        @errors.startDate = 'You\'re start date is after your end' if datesBackward
+        @errors.endDate = 'Can\'t select a future end date' if futureEndDate
+        @errors.endDate = 'Employment must either be current or have an end date' if !@value.isCurrent and !endDate
+        @errors.title = 'A position is required' if @value.title and @value.title.length == 0
         
-        @errors.startDate = datesBackward
-        @errors.endDate = datesBackward or futureEndDate
-
-        # title
-        @errors.title = @value.title and !@value.title.length
-
         @value.startDate = startDate
         @value.endDate = endDate
 
@@ -84,8 +99,7 @@ The value attribute represents the same structure shown above that is emitted on
         @value.startDateText = toDateString(@value.startMonth, @value.startYear)
         @value.endDateText = toDateString(@value.endMonth, @value.endYear)
         @value.startDateText = "unknown" unless @value.startDateText?.length
-        
-        
+                
         # not currently supporting 'unknown' end year
         if @value.isCurrent
           @value.endYear = 5000
@@ -102,7 +116,7 @@ and apply the bits of interaction between data elements.
       companyChange: (evt) ->
         @value.company = evt.detail.item?.value
         @handleChange()
-        @$.title.focus()
+        @$.startDate.focus() if @value.company
       titleChange: ->
         @handleChange()
       titleFocus: ->
