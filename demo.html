@@ -1,0 +1,40 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>glg-employment</title>
+    <script src="node_modules/polymer/platform.js"></script>
+    <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css">
+    <link rel="import" href="node_modules/polymer/polymer.html">
+    <link rel="import" href="build/glg-employment.html">
+    <style>
+      body {
+        font-family: "Helvetica Neue", "Helvetica", Arial;
+      }
+
+      glg-employment {
+        width: 640px;
+      }
+
+    </style>
+  </head>
+  <body unresolved>
+    <div id="holder">
+      
+
+      <glg-employment nectar="wss://nectar.glgroup.com/ws"></glg-employment>
+      
+    </div>
+    <script>
+      document.addEventListener('polymer-ready', function() {
+        //poke your element here
+
+        var employment = document.querySelector('glg-employment');
+
+        employment.addEventListener('save', function(evt) {
+          console.log('event detail', evt.detail)
+        });
+      })
+    </script>
+  </body>
+</html>

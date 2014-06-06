@@ -1,0 +1,145 @@
+@import '../node_modules/font-awesome/less/font-awesome.less';
+@import '../node_modules/ui-styles/typography.less';
+
+// todo: import ui-styles
+
+
+
+:host {
+  display: block;
+  color: #454545;
+}
+  
+ui-typeahead {
+  z-index: 1;
+}
+
+ui-typeahead-item {
+  background: #fff;
+  padding: .75em;
+  z-index: 3;
+
+  i {
+    margin-right: .3em;
+    color: #666;
+  }
+
+  &[focused] {
+    background: #eee;
+  }
+
+  &[selected] {
+    background:#fff;
+  }
+}
+
+
+ui-typeahead[selected] {
+ 
+  & ui-typeahead-item {
+    display:none;
+  }
+
+  & ui-typeahead-item[selected] {
+    display:block;
+    position: absolute;
+    left:0;
+    right:0;
+  }
+
+}
+
+ui-typeahead-item[selected]::before {
+  float:right;
+  content: "(change)";
+  color: #89A5AF; 
+}
+
+
+.company-picker, .title, .dates, .flags {
+  margin-bottom: 1em;
+}
+
+.dates {
+  ui-input {
+    width: 38%;
+  }
+}
+
+
+.switch-container {
+  opacity: .85;
+  margin: .75em 0 0 .75em;
+  display:inline-block;
+  float:right;
+}
+
+
+ui-input[invalid] {
+  outline: fade(@secondary-red, .5) auto 4px;
+  outline-offset: -3px;
+}
+
+
+
+
+// PULLED FROM SCAFFOLDING
+
+input.switch:empty,
+input.radio:empty {
+  margin-left: -9999px;
+}
+
+input.switch:empty ~ label,
+input.radio:empty ~ label {
+  position: relative;
+  float: left;
+  text-indent: 3em;
+  cursor: pointer;
+  line-height: 1.5em;
+}
+
+input.switch:empty ~ label:before,
+input.switch:empty ~ label:after,
+input.radio:empty ~ label:before,
+input.radio:empty ~ label:after {
+  position: absolute;
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  content: ' ';
+  width: 2.5em;
+  height: 1.5em;
+  background: @red;
+  border-radius: 100px;
+  .transition(all, 100ms, ease-in)
+}
+
+input.radio:empty ~ label:before,
+input.radio:empty ~ label:after {
+  width: 1.5em;
+  height: 1.5em;
+  background: @light-grey;
+}
+
+input.switch:empty ~ label:after,
+input.radio:empty ~ label:after {
+  width: .75em;
+  height: .75em;
+  top: .375em;
+  margin-left: .375em;
+  background: @white;
+  border-radius: 100px;
+}
+
+input.switch:checked ~ label:before,
+input.radio:checked ~ label:before {
+  background: @secondary-green;
+}
+
+input.switch:checked ~ label:after {
+  margin-left: 1.375em;
+}
+
+

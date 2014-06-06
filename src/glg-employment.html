@@ -1,0 +1,82 @@
+<link rel="import" href="../node_modules/ui-typeahead/build/ui-typeahead.html" />
+<link rel="import" href="../node_modules/glg-nectar/build/glg-nectar.html" />
+
+<polymer-element name="glg-employment" attributes="nectar resultset">
+<template>
+  <link rel="stylesheet" type="text/css" href="./glg-employment.css">
+
+
+  <div class="company-picker">
+    <glg-nectar 
+        urls="{{nectar}}" 
+        entities='["cm-companies"]'
+        trigger="inputChange"
+        limit="15"
+        resultset="{{resultset}}"
+        >
+
+      <ui-typeahead 
+        id="company"
+        icon="fa-search"
+        on-change="{{companyChange}}"
+        placeholder="Select a company">
+
+            <template id="results" repeat="{{resultset}}">
+                <template repeat="{{r in results}}">
+                  
+                  <ui-typeahead-item value="{{r}}">
+                    <i class="fa fa-building-o"></i> 
+                    <span>{{r.name}}</span> 
+
+                    <template if="{{r.ticker && r.exchange}}">
+                      <small>({{r.ticker}}:{{r.exchange}})</small>
+                    </template>                    
+                  </ui-typeahead-item>
+
+                </template>
+
+            </template>
+
+      </ui-typeahead>
+    </glg-nectar>
+  </div>
+
+  <div class="title">
+    <ui-input id="title" icon="fa-tag" type="text" value="{{value.title}}" placeholder="Position" on-change="{{titleChange}}" on-focus="{{titleFocus}}" invalid?="{{errors.title}}" />
+
+  </div>
+  
+  <div class="dates">
+    <ui-input 
+      type="month" 
+      id="startDate"
+      icon="fa-calendar"  
+      value="{{startDate}}" 
+      placeholder="Start Date" 
+      on-change="{{dateChange}}"
+      invalid?="{{errors.startDate}}"
+    >
+    </ui-input> /
+    <ui-input 
+      type="month" 
+      id="endDate"
+      icon="fa-calendar" 
+      value="{{endDate}}" 
+      placeholder="End Date" 
+      on-change="{{dateChange}}"
+      on-blur="{{dateChange}}"
+      invalid?="{{errors.endDate}}"
+    >
+    </ui-input>
+
+    <div class="switch-container">
+      <input type="checkbox" class="switch" id="isCurrent" name="isCurrent" checked="{{isCurrent}}" on-change="{{flagChange}}">
+      <label for="isCurrent">Current</label>
+    </div>
+
+  </div>
+
+
+</template>
+<script src="./glg-employment.js"></script>
+</polymer-element>
