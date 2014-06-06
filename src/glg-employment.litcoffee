@@ -1,10 +1,10 @@
 #glg-employment
-Encapsulates all of the (somewhat bizarre) logic around capturing the data necessary
+Encapsulates all of the (somewhat bizarre and commonly used) logic around capturing the data necessary
 to create an lead / cm employment record.  Handles the validation and implicity relationship
-between fields like `endDate` and `isCurrent`.
+between fields like `endDate` and `isCurrent`.  Also tried to minimize the amount of clicky input needed
+to get a record entered since this is so heavily used.
 
-#### TODO: Allow for prebinding so it's usable for edits as well.  Could also
-probably integrate taxonomizer as the new one is built out
+#### TODO: Allow for prebinding so it's usable for edits as well.  Could also probably integrate taxonomizer as the new one is built out
 
 
     _ = require('../node_modules/lodash/dist/lodash.js')
@@ -103,22 +103,17 @@ and apply the bits of interaction between data elements.
         @value.company = evt.detail.item?.value
         @handleChange()
         @$.title.focus()
-
       titleChange: ->
         @handleChange()
       titleFocus: ->
         delete @errors.title  
-
       dateChange: (evt) ->
         @value.isCurrent = ! (@endDate?.length > 0)
         @handleChange()
-        
-          
       flagChange: (evt) ->
         if @value.isCurrent and @endDate
           @endDate = undefined 
           @dateChange()
-
         @handleChange()
 
 
