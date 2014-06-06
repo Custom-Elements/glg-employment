@@ -5,6 +5,8 @@
     <title>glg-employment</title>
     <script src="node_modules/polymer/platform.js"></script>
     <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="node_modules/ui-styles/ui-styles.css">
+    <link rel="import" href="node_modules/polymer/polymer.html">
     <link rel="import" href="node_modules/polymer/polymer.html">
     <link rel="import" href="build/glg-employment.html">
     <style>
@@ -12,8 +14,20 @@
         font-family: "Helvetica Neue", "Helvetica", Arial;
       }
 
-      glg-employment {
+      #holder {
         width: 640px;
+      }
+
+      .job {
+        font-size: 19px;
+      }
+
+      .dates {
+        font-weight: bold;
+      }
+
+      .validation {
+        color: green;
       }
 
     </style>
@@ -21,18 +35,50 @@
   <body unresolved>
     <div id="holder">
       
-
+      <h4>Employment Form</h4>
+      <br >
       <glg-employment nectar="wss://nectar.glgroup.com/ws"></glg-employment>
-      
+
+      <br /><br />
+
+      <h4>Output</h4>
+      <template id="output" bind="{{employment}}">
+
+        <div class="job">
+          <span>{{title}}</span> 
+          at 
+          <a href="https://advisors.glgroup.com/company/{{company.id}}" target="blank" style="font-weight:normal">{{company.name}}</a>
+        </div>
+
+        <div class="dates">
+          {{startDateText}} - {{endDateText}}
+        </div>
+
+        <template if="{{valid}}">
+          <br />
+          <div class="validation">
+            <i class="green fa fa-check-circle-o"></i> This record should be valid to save
+          </div>
+        </template>
+
+      </template>
+
+
     </div>
     <script>
       document.addEventListener('polymer-ready', function() {
         //poke your element here
 
-        var employment = document.querySelector('glg-employment');
+        var employment = document.querySelector('glg-employment')
+            output = document.querySelector('#output');
 
-        employment.addEventListener('save', function(evt) {
-          console.log('event detail', evt.detail)
+        employment.addEventListener('change', function(evt) {
+          console.log('employment fired a change event', evt.detail)
+
+          output.model = {
+            employment: evt.detail
+          }
+
         });
       })
     </script>

@@ -17,6 +17,7 @@
     "gulp-replace": "",
     "gulp-shell": "",
     "lodash": "2.3.0",
+    "moment": "^2.6.0",
     "polymer": "git://github.com/Custom-Elements/polymer",
     "ui-styles": "git://github.com/custom-elements/ui-styles",
     "ui-typeahead": "git://github.com/custom-elements/ui-typeahead",
