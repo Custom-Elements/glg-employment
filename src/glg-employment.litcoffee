@@ -4,9 +4,8 @@ to create an lead / cm employment record.  Handles the validation and implicity 
 between fields like `endDate` and `isCurrent`.  Also tried to minimize the amount of clicky input needed
 to get a record entered since this is so heavily used.
 
-
 #### TODO: Support non-normalized companies
-#### TODO: Allow for prebinding so it's usable for edits as well.  Could also probably integrate taxonomizer as the new one is built out
+
 
 
     _ = require('../node_modules/lodash/dist/lodash.js')
@@ -61,12 +60,16 @@ This pretty much does exactly what I hope is obvious given the name.
         @resultset = null
         @$.company.clear()
         @$.title.focus()
+        @preselectedCompany = null
         @dateChange()
 
 
 ##Attributes and Change Handlers
 ####value
-The value attribute represents the same structure shown above that is emitted on the `change` event.
+The value attribute represents the same structure shown above that is emitted on the `change` event.  
+If data is bound into the value attribute in the same structure as the expected output defined above, 
+it will initialize the form for editing as well.  Any additional properties attached to value should also
+be carried through so your primary key needed to do the update should remain intacted
 
 
       handleChange: ->
@@ -143,7 +146,7 @@ and apply the bits of interaction between data elements.
         @errors = {}
         @shadowRoot ||= @webkitShadowRoot
 
-        if @value          
+        if @value
           @value.startDate = moment(@value.startDate).format('YYYY-MM') if @value.startDate
           @value.endDate = moment(@value.endDate).format('YYYY-MM') if @value.endDate
           @preselectedCompany = @value.company
@@ -152,7 +155,7 @@ and apply the bits of interaction between data elements.
           setTimeout =>
             @$.company.selectItem(@shadowRoot.querySelector('ui-typeahead-item'))
             @$.title.focus()
-          , 1
+          , 5
           
         @value ||= {}
         @dateChange()

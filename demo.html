@@ -65,6 +65,13 @@
           </div>
         </template>
 
+        <template if="{{jobFunctionRelationId}}">
+          <div>
+          <br /></br /><br />
+           <i class="yellow fa fa-edit"></i> Editing record {{jobFunctionRelationId}}
+          </div>
+        </template>
+
       </template>
 
 
@@ -81,6 +88,7 @@
         container.model = {
           initial: {
             job: {
+              jobFunctionRelationId: 12345,
               title: 'Grand Moff',
               startDate: new Date(2013,3), // Should be able to automatically bind in anything
               endDate: 'january 1, 2014',  // that moment can wrap automatically
