@@ -1,7 +1,7 @@
 <link rel="import" href="../node_modules/ui-typeahead/build/ui-typeahead.html" />
 <link rel="import" href="../node_modules/glg-nectar/build/glg-nectar.html" />
 
-<polymer-element name="glg-employment" attributes="nectar resultset">
+<polymer-element name="glg-employment" attributes="value nectar resultset">
 <template>
   <link rel="stylesheet" type="text/css" href="./glg-employment.css">
 
@@ -27,20 +27,23 @@
         on-change="{{companyChange}}"
         placeholder="Select a company">
 
+            <template id="company-tmpl">
+              <ui-typeahead-item value="{{ }}" class="{{class}}">
+                <i class="fa fa-building-o"></i> 
+                <span>{{name}}</span> 
+                <template if="{{ticker && exchange}}">
+                  <small>({{ticker}}:{{exchange}})</small>
+                </template>                    
+              </ui-typeahead-item>
+            </template>
+
+            <!-- we'll write out the 'preselected' item and keep it always available -->
+            <template bind="{{preselectedCompany}}" ref="company-tmpl">
+            </template>
+            
+            <!-- iterate the guys provided from nectar as well -->
             <template id="results" repeat="{{resultset}}">
-                <template repeat="{{r in results}}">
-                  
-                  <ui-typeahead-item value="{{r}}">
-                    <i class="fa fa-building-o"></i> 
-                    <span>{{r.name}}</span> 
-
-                    <template if="{{r.ticker && r.exchange}}">
-                      <small>({{r.ticker}}:{{r.exchange}})</small>
-                    </template>                    
-                  </ui-typeahead-item>
-
-                </template>
-
+              <template repeat="{{results}}" ref="company-tmpl"></template>
             </template>
 
       </ui-typeahead>
@@ -55,26 +58,29 @@
       <label for="isCurrent">Current</label>
     </div>
 
-
     <ui-input 
       type="month" 
       id="startDate"
       icon="fa-calendar"  
-      value="{{startDate}}" 
+      value="{{value.startDate}}" 
       placeholder="Start Date" 
       on-change="{{dateChange}}"
       invalid?="{{errors.startDate}}"
+      min="1980-01"
+      max="2019-12"
     >
     </ui-input>
     <ui-input 
       type="month" 
       id="endDate"
       icon="fa-calendar" 
-      value="{{endDate}}" 
+      value="{{value.endDate}}" 
       placeholder="End Date" 
       on-change="{{dateChange}}"
       on-blur="{{dateChange}}"
       invalid?="{{errors.endDate}}"
+      min="1970-01"
+      max="2019-12"
     >
     </ui-input>
 

@@ -4,6 +4,8 @@ to create an lead / cm employment record.  Handles the validation and implicity 
 between fields like `endDate` and `isCurrent`.  Also tried to minimize the amount of clicky input needed
 to get a record entered since this is so heavily used.
 
+
+#### TODO: Support non-normalized companies
 #### TODO: Allow for prebinding so it's usable for edits as well.  Could also probably integrate taxonomizer as the new one is built out
 
 
@@ -69,8 +71,8 @@ The value attribute represents the same structure shown above that is emitted on
 
       handleChange: ->
 
-        startDate = parseDate(@startDate)
-        endDate = parseDate(@endDate)
+        startDate = parseDate(@value?.startDate)
+        endDate = parseDate(@value?.endDate)
 
         @errors = {}
         
@@ -82,30 +84,34 @@ The value attribute represents the same structure shown above that is emitted on
         @errors.endDate = 'Employment must either be current or have an end date' if !@value.isCurrent and !endDate
         @errors.title = 'A position is required' if @value.title and @value.title.length == 0
         
-        @value.startDate = startDate
-        @value.endDate = endDate
-
+        
         @value.valid = !!( _(@errors).values().compact().value().length is 0 and
           @value.company?.id and
           @value.title?.length)
 
         # some basic translations
-        @value.startMonth = @value.startDate?.month()
-        @value.startYear = @value.startDate?.year()
-        @value.endMonth = @value.endDate?.month()
-        @value.endYear = @value.endDate?.year()
+        @value.startMonth = startDate?.month()
+        @value.startYear = startDate?.year()
+        @value.endMonth = endDate?.month()
+        @value.endYear = endDate?.year()
 
         # some formatted helpers
         @value.startDateText = toDateString(@value.startMonth, @value.startYear)
         @value.endDateText = toDateString(@value.endMonth, @value.endYear)
         @value.startDateText = "unknown" unless @value.startDateText?.length
-                
+
         # not currently supporting 'unknown' end year
         if @value.isCurrent
           @value.endYear = 5000
           @value.endDateText = "current" 
 
-        @fire 'change', @value
+        # Clone it so I'm not manipulating the bound values that I need to overwrite to maintain
+        # a reasonable structure on the event data.
+        ret = _.cloneDeep @value
+        ret.startDate = startDate
+        ret.endDate = endDate
+
+        @fire 'change', ret
 
 
 ##Event Handlers
@@ -122,11 +128,11 @@ and apply the bits of interaction between data elements.
       titleFocus: ->
         delete @errors.title  
       dateChange: (evt) ->
-        @value.isCurrent = ! (@endDate?.length > 0)
+        @value.isCurrent = ! (@value.endDate?.length > 0)
         @handleChange()
       flagChange: (evt) ->
-        if @value.isCurrent and @endDate
-          @endDate = undefined 
+        if @value.isCurrent and @value.endDate
+          @value.endDate = undefined 
           @dateChange()
         @handleChange()
 
@@ -135,5 +141,18 @@ and apply the bits of interaction between data elements.
 
       attached: ->
         @errors = {}
+        @shadowRoot ||= @webkitShadowRoot
+
+        if @value          
+          @value.startDate = moment(@value.startDate).format('YYYY-MM') if @value.startDate
+          @value.endDate = moment(@value.endDate).format('YYYY-MM') if @value.endDate
+          @preselectedCompany = @value.company
+          @preselectedCompany.class = 'preselected'
+          
+          setTimeout =>
+            @$.company.selectItem(@shadowRoot.querySelector('ui-typeahead-item'))
+            @$.title.focus()
+          , 1
+          
         @value ||= {}
         @dateChange()

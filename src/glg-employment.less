@@ -24,6 +24,12 @@ ui-typeahead-item {
     color: #666;
   }
 
+  &.preselected:after {
+    content: ' - originally selected';
+    opacity: .5;
+
+  }
+
   &[focused] {
     background: #eee;
   }

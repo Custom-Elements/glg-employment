@@ -37,7 +37,11 @@
       
       <h4>Employment Form  <a id="clear"><i class="fa fa-empire"></i></a></h4>
       <br >
-      <glg-employment nectar="wss://nectar.glgroup.com/ws"></glg-employment>
+
+
+      <template id="container-tmpl" bind="{{initial}}">
+        <glg-employment nectar="wss://nectar.glgroup.com/ws" value="{{job}}"></glg-employment>
+      </template>
 
       <br /><br />
 
@@ -69,19 +73,37 @@
       document.addEventListener('polymer-ready', function() {
         //poke your element here
 
-        var employment = document.querySelector('glg-employment')
-            output = document.querySelector('#output')
-            clearLink = document.querySelector('#clear');
+        var output = document.querySelector('#output')
+            clearLink = document.querySelector('#clear')
+            container = document.querySelector("#container-tmpl");
 
+        // set up the data that gets bound in onload
+        container.model = {
+          initial: {
+            job: {
+              title: 'Grand Moff',
+              startDate: new Date(2013,3), // Should be able to automatically bind in anything
+              endDate: 'january 1, 2014',  // that moment can wrap automatically
+              company: {
+                companyId: 123355,
+                name: 'Fake test company'
+              },
+            }
+          }
+        };
 
-        clearLink.addEventListener('click', function() {
-          employment.clear()
-        });
+        setTimeout(function() {
+          // give the template a sec to bind in, then hook the event listener
+          // for change
+          var employment = document.querySelector('glg-employment')
+          employment.addEventListener('change', function(evt) {
+            output.model = { employment: evt.detail };
+          });
 
-
-        employment.addEventListener('change', function(evt) {
-          output.model = { employment: evt.detail };
-        });
+          clearLink.addEventListener('click', function() {
+            employment.clear()
+          });
+        }, 200);
       })
     </script>
   </body>

@@ -4,6 +4,8 @@ to create an lead / cm employment record.  Handles the validation and implicity 
 between fields like `endDate` and `isCurrent`.  Also tried to minimize the amount of clicky input needed
 to get a record entered since this is so heavily used.
 
+
+#### TODO: Support non-normalized companies
 #### TODO: Allow for prebinding so it's usable for edits as well.  Could also probably integrate taxonomizer as the new one is built out
 
 
@@ -94,6 +96,9 @@ The value attribute represents the same structure shown above that is emitted on
 
 
 
+
+
+
 ##Event Handlers
 Events are captured off the contained fields and used to trigger validity checks
 and apply the bits of interaction between data elements.
@@ -116,6 +121,18 @@ and apply the bits of interaction between data elements.
 
 
 ##Polymer Lifecycle
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
